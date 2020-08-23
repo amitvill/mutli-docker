@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t amitvill/react-test -f ./client/Dockerfiel.dev ./client
+
+script:
+  - docker run -e CI=true amitvill/react-test npm test
+
+after_success:
+  - docker build -t amitvill/multi-client ./client
+  - docker build -t amitvill/multi-nginx ./nginx
+  - docker build -t amitvill/multi-server ./server
+  - docker build -t amitvill/multi-worker ./worker
+  # login to docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push the images to docker hub
+  - docker push amitvill/multi-client
+  - docker push amitvill/multi-nginx
+  - docker push amitvill/multi-server
+  - docker push amitvill/multi-worker
