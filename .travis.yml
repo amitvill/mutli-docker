@@ -20,3 +20,16 @@ after_success:
   - docker push amitvill/multi-nginx
   - docker push amitvill/multi-server
   - docker push amitvill/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: eu-west-2
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-eu-west-2-075741161685
+  bucket_path: docker-multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_aceess_key:
+    secure: $AWS_SECRET_KEY
