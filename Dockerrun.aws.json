@@ -1,0 +1,38 @@
+{
+    "AWSEBCockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "amitvill/multi-client",
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name": "server",
+            "image": "amitvill/multi-server",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name": "worker",
+            "image": "amitvill/multi-worker",
+            "hostname": "worker",
+            "essential": false
+        },
+        {
+            "name": "nginx",
+            "image": "amitvill/multi-nginx",
+            "essential": true,
+            "portMapping": [
+                {
+                    "hostPort": 80,
+                    "containerPort" : 80
+                }
+                
+            ],
+            "links": ["client","server"]
+
+        }
+    ]
+
+}
